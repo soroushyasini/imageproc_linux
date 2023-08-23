@@ -1,0 +1,15 @@
+# input filenames
+inf <- list.files("/media/linux/HDD/SAR_procs/matlab/kermanshah_15_23/INTF", pattern="tif$", full.names=TRUE)
+# create output filenames and folder
+outf <- gsub("/media/linux/HDD/SAR_procs/matlab/kermanshah_15_23/INTF", "output", inf)
+dir.create("output", FALSE, FALSE)
+
+library(raster)
+wp_shp <- shapefile("/media/linux/HDD/SAR_procs/matlab/kermanshah_15_23/INTF/shape_R/R_lic_kerm.shp")
+e <- extent(wp_shp)
+
+for (i in 1:length(inf)) {
+  b <- brick(inf[i])
+  crop(b, e, filename=outf[i]) 
+}
+
