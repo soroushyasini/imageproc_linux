@@ -1,0 +1,23 @@
+import json
+from datetime import datetime
+
+def convert_decimal_date(decimal_date):
+    year = int(decimal_date)
+    remainder = decimal_date - year
+    base_date = datetime(year, 1, 1)
+    result_date = base_date + (base_date.replace(year=year + 1) - base_date) * remainder
+    return result_date.strftime("%Y-%m-%d")
+
+# Read the JSON file
+with open('your_json_file.json', 'r') as f:
+    data = json.load(f)
+
+# Iterate over each station and update the date format
+for station in data['station']:
+    station['Day'] = convert_decimal_date(float(station['Day']))
+
+# Write the modified data to a new JSON file
+with open('modified_json_file.json', 'w') as f:
+    json.dump(data, f, indent=4)  # indent=4 for pretty printing
+
+print("Conversion completed. Modified JSON file saved.")
